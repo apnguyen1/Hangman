@@ -48,7 +48,10 @@ class game_client_tests(unittest.TestCase):
     def test_invalid_guess(self):
         obj5 = self.setUpWord("seize")
         
-        self.assertRaises(Exception, obj5.guess("ab"))
+        self.assertRaises(TypeError, obj5.guess, ["poop"])
+        self.assertRaises(ValueError, obj5.guess, "ab")
+        self.assertRaises(ValueError, obj5.guess, "1")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,6 +2,7 @@
 from multiprocessing.sharedctypes import Value
 from random import choice
 import string
+from typing import Type
 
 
 class Manager:
@@ -9,7 +10,7 @@ class Manager:
         if wordLength < 2 or len(dictionary) == 0:
             raise ValueError("Game cannot be initialized with a word length less than 1 or an empty dictionary.")
                         
-        self.__guesses = 6
+        self.__guesses = 7
         self.__guessedLetters = set()
         self.__words = set()
         self.__current_word = [None] * wordLength
@@ -39,14 +40,17 @@ class Manager:
         return self.__target_word
     
     def guess(self, char):
+        if type(char) != str:
+            raise TypeError("Please enter the guess as a string")
+        
         if len(char) != 1 or not char.isalpha():
-            raise Exception("Please enter a single, alphabetical char")
+            raise ValueError("Please enter a single, alphabetical char")
         
         if self.__guesses < 1:
-            raise Exception("Game over. No more tries")
+            raise ValueError("Game over. No more tries")
         
         if char in self.guessedLetters():
-            raise Exception("Letter has already been guessed previously.")
+            raise ValueError("Letter has already been guessed previously.")
         
         target = self.__target_word.lower()
 
@@ -63,7 +67,16 @@ class Manager:
             
         return count
             
+    def reset(self):
+        self.__guesses = 7
+        self.__guessedLetters.clear()
+        self.__words.clear()
+        self.__current_word.clear()
+    
+    def playAgain(self, wordLength):
+        self.reset()
         
+        self.__target_word = choice(list(self.__words))
         
         
         
