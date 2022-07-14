@@ -6,21 +6,22 @@ import string
 
 class Manager:
     def __init__(self, dictionary, wordLength):
-        if wordLength < 1 or len(dictionary) == 0:
+        if wordLength < 2 or len(dictionary) == 0:
             raise ValueError("Game cannot be initialized with a word length less than 1 or an empty dictionary.")
                         
         self.__guesses = 6
         self.__guessedLetters = set()
         self.__words = set()
         self.__current_word = [None] * wordLength
-        self.__target_word = ['E','E','E','P','E']
         
-        for word in dictionary:
-            
+        for word in dictionary:            
             if len(word) == wordLength:
                 self.__words.add(word)
         
-        print(self.__words)
+        if len(self.__words) != 0:
+            self.__target_word = choice(list(self.__words))
+        else:
+            raise Exception(f"There is no word of length {wordLength} in this dictionary")
         
     def guessesLeft(self):
         return self.__guesses
@@ -31,24 +32,37 @@ class Manager:
     def wordsInDict(self):
         return self.__words
     
-    def randomize(self):
-        return choice(list(self.__words))
+    def set_target_word(self, str):
+        self.__target_word = str
+        
+    def get_target_word(self):
+        return self.__target_word
     
-    def guess(self, char, target):
+    def guess(self, char):
+        if len(char) != 1 or not char.isalpha():
+            raise Exception("Please enter a single, alphabetical char")
+        
+        if self.__guesses < 1:
+            raise Exception("Game over. No more tries")
+        
         if char in self.guessedLetters():
             raise Exception("Letter has already been guessed previously.")
+        
+        target = self.__target_word.lower()
 
-        self.__guessedLetters.add(char)
+        self.__guessedLetters.add(char.lower())
+        count = 0
         
         if char in target:
-            
             for index in range(0, len(target)):
                 if target[index] == char:
                     self.__current_word[index] = char
+                    count += 1
         else:
             self.__guesses -= self.__guesses
             
-        print(self.__current_word)
+        return count
+            
         
         
         
