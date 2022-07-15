@@ -15,7 +15,7 @@ class Manager:
         self.__words = set()
         self.__current_word = ["-"] * wordLength
         
-        for word in dictionary:            
+        for word in dictionary.keys():            
             if len(word) == wordLength:
                 self.__words.add(word)
         

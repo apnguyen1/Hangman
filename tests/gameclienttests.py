@@ -9,16 +9,16 @@ class game_client_tests(unittest.TestCase):
     def setUp(self):
         file = "words.txt"
         
-        self.__dict = list()
+        dict = {}
         
         with open(file, "r") as file:
             words = file.readlines()
             # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
             for word in words:
-                self.__dict.append(word.strip())
+                dict.update({word.strip(): 1})
     
     def tearDown(self):
-        self.dict = []
+        self.dict = {}
         
     # tests invalid inputs given to the game client program.
     def test_invalid_init(self):
