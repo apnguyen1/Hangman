@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="device-width", initial-scale="1.0">
+
+        <title>Hangman</title>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='game.css')}}">
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+    </body>
+    <head>
+        <nav>
+            <ul>
+                <li>Andrew Nguyen</li>
+                <li>Home</li>
+                <li>Hangman</li>
+                <li>Wordle</li> 
+            </ul>
+        </nav>
+        <div class="content">
+            {% block content%}{% endblock %}
+        </div>
+        
+
+
+    </head>
+</html>

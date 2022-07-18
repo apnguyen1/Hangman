@@ -14,10 +14,10 @@ class game_client_tests(unittest.TestCase):
             words = file.readlines()
             # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
             for word in words:
-                dict.update({word.strip(): 1})
+                self.__dict.update({word.strip(): 1})
     
     def tearDown(self):
-        self.__dict = {}
+        self.__dict.clear()
         
     # tests invalid inputs given to the game client program.
     def test_invalid_init(self):
@@ -37,70 +37,69 @@ class game_client_tests(unittest.TestCase):
         self.assertEqual(len(obj4.wordsInDict()), 3, "There should be 3 words with the length of 3 in the file")
         
     # # tests if an exception is raised if no word of wordLength exists
-    # def test_no_word_length_exists_in_dict(self):
-    #     self.assertRaises(Exception, Manager, self.__dict, 3)
+    def test_no_word_length_exists_in_dict(self):
+        self.assertRaises(Exception, Manager, self.__dict, 3)
     
     # # helper to share resources for methods below
-    # def setUpWord(self, word):
-    #     obj5 = Manager(self.__dict, 5)
-    #     obj5.set_target_word(word)
+    def setUpWord(self, word):
+        obj5 = Manager(self.__dict, 5)
+        obj5.set_target_word(word)
         
-    #     return obj5
+        return obj5
     
     # # determines if list to string is converted correctly.
-    # def test_current_word_to_string(self):
-    #     obj5 = self.setUpWord("seize")
+    def test_current_word_to_string(self):
+        obj5 = self.setUpWord("seize")
         
-    #     str = obj5.get_current_word()
+        str = obj5.get_current_word()
         
-    #     self.assertEqual(str, "-----", "current word should be empty")
+        self.assertEqual(str, "-----", "current word should be empty")
         
-    #     obj5.guess("e")
-    #     str = obj5.get_current_word()
+        obj5.guess("e")
+        str = obj5.get_current_word()
         
-    #     self.assertEqual(str, "-e--e", "current word should be -e---e")
+        self.assertEqual(str, "-e--e", "current word should be -e---e")
     
     # # removes immutability from function that returns mutable data.
-    # def test_immut_functions(self):
-    #     obj5 = self.setUpWord("seize")
+    def test_immut_functions(self):
+        obj5 = self.setUpWord("seize")
         
-    #     letters = obj5.guessedLetters()
-    #     dict = obj5.wordsInDict()
+        letters = obj5.guessedLetters()
+        dict = obj5.wordsInDict()
         
-    #     letters.add("a")
-    #     dict.add("thisisAwesome")
+        letters.add("a")
+        dict.add("thisisAwesome")
         
-    #     self.assertFalse("a" in obj5.guessedLetters())
-    #     self.assertFalse("thisisAwesome" in obj5.wordsInDict())
+        self.assertFalse("a" in obj5.guessedLetters())
+        self.assertFalse("thisisAwesome" in obj5.wordsInDict())
         
     
-    # def test_invalid_guess(self):
-    #     obj5 = self.setUpWord("seize")
+    def test_invalid_guess(self):
+        obj5 = self.setUpWord("seize")
         
-    #     self.assertRaises(TypeError, obj5.guess, {"poop": 1})
-    #     self.assertRaises(ValueError, obj5.guess, "ab")
-    #     self.assertRaises(ValueError, obj5.guess, "1")
+        self.assertRaises(TypeError, obj5.guess, {"poop": 1})
+        self.assertRaises(ValueError, obj5.guess, "ab")
+        self.assertRaises(ValueError, obj5.guess, "1")
         
-    #     obj5.guess("a")
-    #     self.assertRaises(ValueError, obj5.guess, "a")
-    #     self.assertRaises(ValueError, obj5.guess, "A")
+        obj5.guess("a")
+        self.assertRaises(ValueError, obj5.guess, "a")
+        self.assertRaises(ValueError, obj5.guess, "A")
 
-    # def test_correct_guesses_left(self):
-    #     obj5 = self.setUpWord("seize")
-    #     obj5.guess("a")
-    #     self.assertEqual(obj5.guessesLeft(), 6, "there are 6 guesses left")
-    #     obj5.guess("e")
-    #     self.assertEqual(obj5.guessesLeft(), 6, "there should still be 6 guesses left")
-    #     obj5.guess("w")
-    #     obj5.guess("q")
-    #     obj5.guess("l")
-    #     obj5.guess("p")
-    #     obj5.guess("u")
-    #     self.assertEqual(obj5.guessesLeft(), 1, "There should be 1 guess left")
-    #     obj5.guess("y")
-    #     self.assertEqual(obj5.guessesLeft(), 0, "there are no more guesses left")
-    #     self.assertRaises(ValueError, obj5.guess, "b")
-        
+    def test_correct_guesses_left(self):
+        obj5 = self.setUpWord("seize")
+        obj5.guess("a")
+        self.assertEqual(obj5.guessesLeft(), 6, "there are 6 guesses left")
+        obj5.guess("e")
+        self.assertEqual(obj5.guessesLeft(), 6, "there should still be 6 guesses left")
+        obj5.guess("w")
+        obj5.guess("q")
+        obj5.guess("l")
+        obj5.guess("p")
+        obj5.guess("u")
+        self.assertEqual(obj5.guessesLeft(), 1, "There should be 1 guess left")
+        obj5.guess("y")
+        self.assertEqual(obj5.guessesLeft(), 0, "there are no more guesses left")
+        self.assertRaises(ValueError, obj5.guess, "b")
     
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ from flask import Flask, render_template
 
 from hangman_client import Manager
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="website/templates")
 
 def createDictionary(file_name):
     file = file_name
@@ -19,15 +19,15 @@ def createDictionary(file_name):
 
 @app.route("/")
 def test():
-    return "hello"
+    return render_template('hangman.html')
 
-@app.route("/dict1")
-def dict1():
-    return createDictionary("words.txt")
+# @app.route("/dict1")
+# def dict1():
+#     return createDictionary("words.txt")
 
-@app.route("/dict2")
-def dict2():
-    return createDictionary("dict2.txt")
+# @app.route("/dict2")
+# def dict2():
+#     return createDictionary("dict2.txt")
 
 
 if __name__ == "__main__":
