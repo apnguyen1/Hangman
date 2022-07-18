@@ -2,7 +2,7 @@ from flask import Flask, render_template
 
 from hangman_client import Manager
 
-app = Flask(__name__, template_folder="website/templates")
+app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
 
 def createDictionary(file_name):
     file = file_name
