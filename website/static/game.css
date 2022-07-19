@@ -1,3 +1,51 @@
-.content {
-    background-color: wheat;
+/* Hangman SVG */
+line, circle {
+    stroke: black;
+    stroke-width: 4px;
 }
+
+rect {
+    fill: none;
+}
+
+.hangman-game {
+    height: 300px;
+    width: 100%;
+}
+
+#hangman-drawing {
+    display: block;
+    height: 100%;
+    width: fit-content;
+    padding: 10px;
+    margin: auto;
+    border: 1px solid black;
+}
+
+/* Hangman Secret Word */
+.hangman-secret-word {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.secret-letter{
+    font-size: 70px;
+    text-align: center;
+}
+
+
+/* Hangman keyboard */
+
+.hangman-keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.keyboard-row {
+    margin-top: 2vh;
+}
+
+

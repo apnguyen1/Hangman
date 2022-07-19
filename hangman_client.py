@@ -1,4 +1,9 @@
+from flask import Flask, render_template
 from random import choice
+
+app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
+
+
 
 # The Manager manages a game of hangman between a player and an AI.
 class Manager:
@@ -93,3 +98,28 @@ class Manager:
         self.reset()
         
         self.__target_word = choice(list(self.__words))
+        
+def createDictionary(file_name):
+    file = file_name
+        
+    dict = {}
+        
+    with open(file, "r") as file:
+        words = file.readlines()
+        # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
+        for word in words:
+            dict.update({word.strip(): 1})
+    
+    return dict
+
+
+@app.route("/")
+def game():
+    obj = Manager(createDictionary("dict1.txt"), 5)
+    
+    word = obj.get_current_word()
+    
+    return render_template("hangman.html", word=word)
+
+if __name__ == "__main__":
+    app.run(debug=True)
