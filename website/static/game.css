@@ -26,12 +26,14 @@ rect {
 .hangman-secret-word {
     display: flex;
     justify-content: center;
-    
+    margin-top: 20px;
+    /* text-align: center; */
 }
 
-.secret-letter{
-    font-size: 70px;
+.secret-letter {
+    font-size: 60px;
     text-align: center;
+    margin-right: 2vw;
 }
 
 
@@ -41,11 +43,14 @@ rect {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
 }
 
 .keyboard-row {
-    margin-top: 2vh;
+    margin-top: 20px;
 }
+
+/* .keyboard-button {
+    padding: 0;
+} */
 
 

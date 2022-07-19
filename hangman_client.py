@@ -115,7 +115,7 @@ def createDictionary(file_name):
 
 @app.route("/")
 def game():
-    obj = Manager(createDictionary("dict1.txt"), 5)
+    obj = Manager(createDictionary("dict2.txt"), 5)
     
     word = obj.get_current_word()
     
