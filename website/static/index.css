@@ -1,0 +1,27 @@
+/* Global */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-size: large;
+}
+
+.content {
+    width: 80%;
+    margin: auto;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* 
+.btn {
+    box-shadow: none !important;
+} */

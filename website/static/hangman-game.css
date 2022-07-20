@@ -43,14 +43,13 @@ rect {
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 .keyboard-row {
     margin-top: 20px;
 }
 
-/* .keyboard-button {
-    padding: 0;
-} */
+
 
 

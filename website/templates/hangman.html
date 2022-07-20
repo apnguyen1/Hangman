@@ -1,87 +1,45 @@
 {% extends "index.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="/static/hangman.css">
+{% endblock %}
+ 
+
 {% block content %}
-<div class="hangman-title">
-    <h1> Welcome to Hangman </h1>
-</div>
-
-<div class="hangman-description">
-    <p>THIS IS TEMPTEXT HOLDER. DESCRIPTION OF HANGMAN WILL BE HERE. THIS IS TEMPTEXT HOLDER. DESCRIPTION OF HANGMAN
-        WILL BE HERE. THIS IS TEMPTEXT HOLDER. DESCRIPTION OF HANGMAN WILL BE HERE.</p>
-</div>
-
-<div class="hangman-game">
-    <svg id="hangman-drawing" class="text-center">
-        <g>
-            <g id="drawing-frame">
-                <rect x="0" y="0" width="100%" height="100%" stroke-width="3px"></rect>
-            </g>
-            <!-- Drawing of Platform -->
-            <g id="drawing-platform">
-                <line x1="0" y1="250" x2="390" y2="250"></line>
-                <line x1="100" y1="250" x2="100" y2="20"></line>
-                <line x1="100" y1="20" x2="200" y2=20></line>
-                <line x1="200" y1="20" x2="200" y2="60"></line>
-            </g>
-
-            <!-- Drawing of Body -->
-            <g id="drawing-body">
-                <circle id="head" cx="200" cy="80" r="20" fill="white"></circle>
-                <circle id="left-eye" cx="193" cy="80" r="4"></circle>
-                <circle id="right-eye" cx="207" cy="80" r="4"></circle>
-                <line id="torso" x1="200" y1="100" x2="200" y2="150" />
-                <line id="armL" x1="200" y1="120" x2="170" y2="140" />
-                <line id="armR" x1="200" y1="120" x2="230" y2="140" />
-                <line id="legL" x1="200" y1="150" x2="180" y2="190" />
-                <line id="legR" x1="200" y1="150" x2="220" y2="190" />
-            </g>
-        </g>
-    </svg>
-</div>
-
-<div class="hangman-secret-word">
-
-    {% for letter in word %} 
-        <span class="secret-letter" id={{"letter-" ~ loop.index}}>-</span>
-    {% endfor %}
-
+<div class="content text-center">
+    <div class="hangman-title">
+        <h1> Welcome to Hangman </h1>
+    </div>
     
-</div>
+    <div class="hangman-description">
+        <p>Welcome to Hangman! The computer will think of a word and you will try to guess what it is
+            one letter at a time. The number of dashes are the number of letters in the secret word.
+            Guessing a correct letter from below will replaces those dashes for every letter contained
+            in the secret word. If the letter guessed is incorrect, the computer will draw a segment
+            of the gallows and the man will be closer to execution. The number of incorrect guesses 
+            before the game ends will be <span>10 guesses</span>. That's it, have fun!
+        </p>
+    </div>
 
-<div class="hangman-keyboard">
-    <div class="keyboard-row row-one">
-        <button class="keyboard-button btn">q</button>
-        <button class="keyboard-button btn">w</button>
-        <button class="keyboard-button btn">e</button>
-        <button class="keyboard-button btn">r</button>
-        <button class="keyboard-button btn">t</button>
-        <button class="keyboard-button btn">y</button>
-        <button class="keyboard-button btn">u</button>
-        <button class="keyboard-button btn">i</button>
-        <button class="keyboard-button btn">o</button>
-        <button class="keyboard-button btn">p</button>
-    </div>
-    <div class="keyboard-row row-two">
-        <button class="keyboard-button btn">a</button>
-        <button class="keyboard-button btn">s</button>
-        <button class="keyboard-button btn">d</button>
-        <button class="keyboard-button btn">f</button>
-        <button class="keyboard-button btn">g</button>
-        <button class="keyboard-button btn">h</button>
-        <button class="keyboard-button btn">j</button>
-        <button class="keyboard-button btn">k</button>
-        <button class="keyboard-button btn">l</button>
-    </div>
-    <div class="keyboard-row row-three">
-        <button class="keyboard-button btn">z</button>
-        <button class="keyboard-button btn">x</button>
-        <button class="keyboard-button btn">c</button>
-        <button class="keyboard-button btn">v</button>
-        <button class="keyboard-button btn">b</button>
-        <button class="keyboard-button btn">n</button>
-        <button class="keyboard-button btn">m</button>
+<div class="game-setting-container">
+    <div class="inner-setting-container">
+        <h1>Choose a topic</h1>
+        <div class="topic-container">
+            <div class="topic-item btn btn-md border-primary">
+                <span class="topic-title text-bg-light">Classic</span>
+                <p class="topic-desc">Words from English Dictionary</p>
+            </div>
+            <div class="topic-item btn btn-md border-primary">
+                <span class="topic-title text-bg-light">LoL</span>
+                <p class="topic-desc">A champion from League of Legend</p>
+            </div>
+            <div class="topic-item btn btn-md border-primary">
+                <span class="topic-title text-bg-light">Testing</span>
+                <p class="topic-desc">A small dictionary</p>
+            </div>
+
+        
+        </div>
     </div>
 </div>
-
-
 {% endblock %}

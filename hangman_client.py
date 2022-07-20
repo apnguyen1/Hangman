@@ -1,9 +1,4 @@
-from flask import Flask, render_template
 from random import choice
-
-app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
-
-
 
 # The Manager manages a game of hangman between a player and an AI.
 class Manager:
@@ -11,47 +6,44 @@ class Manager:
     # Initializes the game of Hangman. 
     # Raises ValueError if given empty dictionary or the given word length is less than 2. 
     # Raises Exception if there are no words that are wordLength long. 
-    def __init__(self, dictionary, wordLength):
-        if wordLength < 2 or len(dictionary) == 0:
-            raise ValueError("Game cannot be initialized with a word length less than 1 or an empty dictionary.")
+    def __init__(self, dictionary):
+        if type(dictionary) is not dict or len(dictionary) == 0 :
+            raise ValueError("Game cannot be initialized with an empty dictionary.")
                         
-        self.__guesses = 7
-        self.__guessedLetters = set()
-        self.__words = set()
-        self.__current_word = ["-"] * wordLength
+        self.guesses = 7
+        self.letters_guessed = set()
+        self.words = set()
         
-        for word in dictionary.keys():            
-            if len(word) == wordLength:
-                self.__words.add(word)
-        
-        if len(self.__words) != 0:
-            self.__target_word = choice(list(self.__words))
-        else:
-            raise Exception(f"There is no word of length {wordLength} in this dictionary")
+        for word in dictionary.keys():
+                self.words.add(word)
+
+        self.secret_word = choice(list(self.words))
+        self.current_word = ["-"] * len(self.secret_word)
         
     # Retrieves the user's amount of guesses left to find the correct word. 
-    def guessesLeft(self):
-        return self.__guesses
+    def guesses_left(self):
+        return self.guesses
     
     # Retrieves a copy of user's guessed letters. 
-    def guessedLetters(self):
-        return self.__guessedLetters.copy()
+    def guessed_letters(self):
+        return self.letters_guessed.copy()
     
     # Retrieves a copy of possible words in the dictionary.
-    def wordsInDict(self):
-        return self.__words.copy()
+    def words_in_dict(self):
+        return self.words.copy()
     
     # A helper method to test the program.
-    def set_target_word(self, str):
-        self.__target_word = str
+    def set_secret_word(self, str):
+        self.secret_word = str
+        self.current_word = ["-"] * len(self.secret_word)
     
     # Retrieves the secret/target word that the computer has choosen. 
-    def get_target_word(self):
-        return self.__target_word
+    def get_secret_word(self):
+        return self.secret_word
     
     # Retrieves the current guesses that the user has made
     def get_current_word(self):
-        return "".join(self.__current_word)
+        return "".join(self.current_word)
     
     # Determines whether the user guess is in the secret word. Adds the guessed letter to the
     # existing letters guessed, and appriopriately updates the amount of guesses left. 
@@ -67,59 +59,34 @@ class Manager:
         if len(char) != 1 or not char.isalpha():
             raise ValueError("Please enter a single, alphabetical char")
         
-        if self.__guesses < 1:
+        if self.guesses < 1:
             raise ValueError("Game over. No more tries")
         
-        if char.lower() in self.guessedLetters():
+        if char.lower() in self.guessed_letters():
             raise ValueError("Letter has already been guessed previously.")
         
-        target = self.__target_word.lower()
+        target = self.secret_word.lower()
 
-        self.__guessedLetters.add(char.lower())
+        self.guessed_letters().add(char.lower())
         count = 0
         
         if char in target:
             for index in range(0, len(target)):
                 if target[index] == char:
-                    self.__current_word[index] = char
+                    self.current_word[index] = char
                     count += 1
         else:
-            self.__guesses -= 1
+            self.guesses -= 1
             
         return count
             
-    def reset(self):
-        self.__guesses = 7
-        self.__guessedLetters.clear()
-        self.__words.clear()
-        self.__current_word.clear()
+    # def reset(self):
+    #     self.__guesses = 7
+    #     self.__guessedLetters.clear()
+    #     self.__words.clear()
+    #     self.__current_word.clear()
     
-    def playAgain(self, wordLength):
-        self.reset()
+    # def playAgain(self, wordLength):
+    #     self.reset()
         
-        self.__target_word = choice(list(self.__words))
-        
-def createDictionary(file_name):
-    file = file_name
-        
-    dict = {}
-        
-    with open(file, "r") as file:
-        words = file.readlines()
-        # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
-        for word in words:
-            dict.update({word.strip(): 1})
-    
-    return dict
-
-
-@app.route("/")
-def game():
-    obj = Manager(createDictionary("dict2.txt"), 5)
-    
-    word = obj.get_current_word()
-    
-    return render_template("hangman.html", word=word)
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    #     self.__target_word = choice(list(self.__words))
