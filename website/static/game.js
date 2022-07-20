@@ -6,13 +6,14 @@ $("button").click(function (e) {
     $(this).addClass("disabled");
     $(this).addClass("btn-secondary");
 
-    $.ajax({
-        type: "POST",
-        url: "",
-        data: "hello",
-        success: function (response) {
-            console.log(data);
-        }
-    });
-});
+    console.log(this);
 
+    // $.ajax({
+    //     type: "POST",
+    //     url: "",
+    //     data: "hello",
+    //     success: function (response) {
+    //         console.log(data);
+    //     }
+    // });
+});

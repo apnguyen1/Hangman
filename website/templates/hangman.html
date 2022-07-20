@@ -25,7 +25,7 @@
     <div class="inner-setting-container">
         <h1>Choose a topic</h1>
         <div class="topic-container">
-            <div class="topic-item btn btn-md border-primary">
+            <div class="topic-item btn btn-md border-primary" method="post">
                 <span class="topic-title text-bg-light">Classic</span>
                 <p class="topic-desc">Words from English Dictionary</p>
             </div>
@@ -42,4 +42,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='hangman.js') }}"></script>
 {% endblock %}
