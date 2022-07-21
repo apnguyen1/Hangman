@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="../static/hangman-game.css">
+<link rel="stylesheet" href={{ url_for('static', filename='hangman-game.css') }}>
 {% endblock %}
 
 {% block content %}

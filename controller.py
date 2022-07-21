@@ -1,4 +1,5 @@
-from flask import Flask, redirect, render_template, request, url_for
+from uuid import uuid1
+from flask import Flask, redirect, render_template, request, url_for, session
 from hangman_client import Manager
 
 app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
@@ -22,24 +23,21 @@ def home():
 
 @app.route("/game", methods=["POST", "GET"])
 def hangman():
-    
-    if request.method == "POST":
-        data = request.form['data']
-        
-        print(data)
-        return redirect(url_for("home"))
-    else:    
-        return render_template("hangman.html")
+    return render_template("hangman.html")
 
-# @app.route("/game-topic" methods=["POST", GET])
-# def topic():
+@app.route("/game/createid", methods=["GET"])
+def createid():
+    id = uuid1()
     
-#     print(re)
+    return str(id)
+    
 
-@app.route("/game/play")
-def game():
+@app.route("/game/<string:topic>/<string:gameid>", methods=["POST", "GET"])
+def game(topic, gameid):
+    print(request.args)
+    
+    
     obj = Manager(createDictionary("dict1.txt"))
-    
     word = obj.get_current_word()
     
     return render_template("hangman-game.html", word=word)
