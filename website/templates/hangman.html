@@ -1,48 +1,40 @@
 {% extends "index.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/hangman.css">
+<link rel="stylesheet" href="/static/css/hangman.css">
 {% endblock %}
- 
+
 
 {% block content %}
-<div class="content text-center">
-    <div class="hangman-title">
-        <h1> Welcome to Hangman </h1>
-    </div>
-    
-    <div class="hangman-description">
-        <p>Welcome to Hangman! The computer will think of a word and you will try to guess what it is
-            one letter at a time. The number of dashes are the number of letters in the secret word.
-            Guessing a correct letter from below will replaces those dashes for every letter contained
-            in the secret word. If the letter guessed is incorrect, the computer will draw a segment
-            of the gallows and the man will be closer to execution. The number of incorrect guesses 
-            before the game ends will be <span>10 guesses</span>. That's it, have fun!
-        </p>
-    </div>
-
-<div class="game-setting-container">
-    <div class="inner-setting-container">
-        <h1>Choose a topic</h1>
-        <div class="topic-container">
-            <div class="topic-item btn btn-md border-primary" method="post">
-                <span class="topic-title text-bg-light">Classic</span>
-                <p class="topic-desc">Words from English Dictionary</p>
-            </div>
-            <div class="topic-item btn btn-md border-primary">
-                <span class="topic-title text-bg-light">LoL</span>
-                <p class="topic-desc">A champion from League of Legend</p>
-            </div>
-            <div class="topic-item btn btn-md border-primary">
-                <span class="topic-title text-bg-light">Testing</span>
-                <p class="topic-desc">A small dictionary</p>
-            </div>
-        
-        </div>
-    </div>
+<div class="hangman-title">
+    <h1> Welcome to Hangman </h1>
 </div>
+
+<div class="hangman-description">
+    <p>Welcome to Hangman! The computer will think of a word and you will try to guess what it is
+        one letter at a time. The number of dashes are the number of letters in the secret word.
+        Guessing a correct letter from below will replaces those dashes for every letter contained
+        in the secret word. If the letter guessed is incorrect, the computer will draw a segment
+        of the gallows and the man will be closer to execution. The number of incorrect guesses
+        before the game ends will be <span>10 guesses</span>. That's it, have fun!
+    </p>
+</div>
+<form class="topic-form" action="{{ url_for('play') }}" method="POST">
+    <div class="topic-item btn btn-md border-primary">
+        <span class="topic-title text-bg-light">Classic</span>
+        <p class="topic-desc">Words from English Dictionary</p>
+    </div>
+    <div class="topic-item btn btn-md border-primary">
+        <span class="topic-title text-bg-light">LoL</span>
+        <p class="topic-desc">A champion from League of Legend</p>
+    </div>
+    <div class="topic-item btn btn-md border-primary" action="">
+        <span class="topic-title text-bg-light">Testing</span>
+        <p class="topic-desc">A small dictionary</p>
+    </div>
+</form>
 {% endblock %}
 
 {% block script %}
-<script src="{{ url_for('static', filename='hangman.js') }}"></script>
+<script src="{{ url_for('static', filename='js/hangman.js') }}"></script>
 {% endblock %}

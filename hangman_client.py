@@ -90,3 +90,16 @@ class Manager:
     #     self.reset()
         
     #     self.__target_word = choice(list(self.__words))
+    
+    def createDictionary(file_name):
+        file = file_name
+            
+        dict = {}
+            
+        with open(file, "r") as file:
+            words = file.readlines()
+            # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
+            for word in words:
+                dict.update({word.strip(): 1})
+        
+        return dict

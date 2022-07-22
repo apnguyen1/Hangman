@@ -1,48 +1,58 @@
-from uuid import uuid1
-from flask import Flask, redirect, render_template, request, url_for, session
-from hangman_client import Manager
+from email.policy import default
+from flask import Flask, redirect, render_template, request, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
 
-def createDictionary(file_name):
-    file = file_name
-        
-    dict = {}
-        
-    with open(file, "r") as file:
-        words = file.readlines()
-        # seize serve sharp andrew beezy jazzy aahed Abamp poops wendy john phone mouse mice lamp superfaiclious
-        for word in words:
-            dict.update({word.strip(): 1})
+
+# DATABASE
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///hangman.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
+class Game(db.Model):
+    _gameid = db.Column("id", db.Integer, primary_key=True)
+    _word = db.Column(db.String(30))
+    _guesses = db.Column(db.Integer, default="10")
     
-    return dict
+    def __init__(self, word):
+        self._word = word
+
+# END OF DATABASE
+
+# ROUTES
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
 @app.route("/game", methods=["POST", "GET"])
-def hangman():
+def hangman():    
     return render_template("hangman.html")
 
-@app.route("/game/createid", methods=["GET"])
-def createid():
-    id = uuid1()
-    
-    return str(id)
-    
 
-@app.route("/game/<string:topic>/<string:gameid>", methods=["POST", "GET"])
-def game(topic, gameid):
-    print(request.args)
+@app.route("/play", methods=["POST"])
+def play():
+    game = Game("andrew")
+    db.session.add(game)
+    db.session.commit()
     
+    return redirect(url_for('game', gameid=game._gameid))
+
+@app.route("/game/<string:gameid>", methods=["POST", "GET"])
+def game(gameid):
+    game = Game.query.get_or_404(gameid)
     
-    obj = Manager(createDictionary("dict1.txt"))
-    word = obj.get_current_word()
+    word = game._word
     
     return render_template("hangman-game.html", word=word)
 
 
+# END OF ROUTES
+
 
 if __name__ == "__main__":
+    db.create_all()
     app.run(debug=True)
