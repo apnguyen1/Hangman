@@ -1,4 +1,5 @@
 from email.policy import default
+from uuid import uuid1
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,12 +14,12 @@ db = SQLAlchemy(app)
 
 
 class Game(db.Model):
-    _gameid = db.Column("id", db.Integer, primary_key=True)
-    _word = db.Column(db.String(30))
-    _guesses = db.Column(db.Integer, default="10")
+    gameid = db.Column(db.Integer, primary_key=True)
+    word = db.Column(db.String(30))
+    guesses = db.Column(db.Integer)
     
-    def __init__(self, word):
-        self._word = word
+    def __repr__(self):
+        return "<Game %r > " % self.gameid
 
 # END OF DATABASE
 
@@ -36,23 +37,33 @@ def hangman():
 @app.route("/play", methods=["POST"])
 def play():
     game = Game("andrew")
-    db.session.add(game)
-    db.session.commit()
+    # db.session.add(game)
+    # db.session.commit()
     
-    return redirect(url_for('game', gameid=game._gameid))
+    # games = game.query.all()
+    
+    print(game.query.all())
+    
+    # print(games)
+    
+    # for x in games:
+    #     # db.session.query(x)
+        
+    #     print(db.session.query(x))
+    
+    return redirect(url_for('home'))
 
-@app.route("/game/<string:gameid>", methods=["POST", "GET"])
-def game(gameid):
-    game = Game.query.get_or_404(gameid)
+# @app.route("/game/<string:gameid>", methods=["POST", "GET"])
+# def game(gameid):
+    # game = Game.query.get_or_404(gameid)
     
-    word = game._word
+    # word = game._word
     
-    return render_template("hangman-game.html", word=word)
+    # return render_template("hangman-game.html")
 
 
 # END OF ROUTES
 
 
 if __name__ == "__main__":
-    db.create_all()
     app.run(debug=True)

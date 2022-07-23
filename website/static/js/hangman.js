@@ -1,11 +1,9 @@
 $(".topic-item").click(function (e) {
-    $(".topic-form").submit();
-    // $.ajax({
-    //     type: "POST",
-    //     url: "/play",
-    //     data: "data",
-    //     success: function (response) {
-    //         window.location.href = 
-    //     },
-    // });
+    // $(".topic-form").submit();
+
+    $.post("/play",
+        function (data, textStatus, jqXHR) {
+          console.log("SUCCESS")  
+        },
+    );
 });
