@@ -1,6 +1,7 @@
-from email.policy import default
+import json
+from secrets import choice
 from uuid import uuid1
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder="website/templates", static_folder="website/static")
@@ -12,19 +13,32 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///hangman.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-
 class Game(db.Model):
     gameid = db.Column(db.String(50), primary_key=True)
     word = db.Column(db.String(30))
-    guesses = db.Column(db.Integer, default="8")
+    guesses = db.Column(db.Integer)
+    letters = db.Column(db.String(26))
     
-    def __init__(self, word):
-        self.gameid = uuid1()
-        self.word = word
-    
-    # def __repr__(self):
-    #     return "<Game %r > " % self.gameid
+    def __init__(self, dict):
+        words = open(dict).read().splitlines()
+        
+        self.gameid = str(uuid1())
+        self.word = choice(words)
+        self.guesses = 8
+        self.letters = ''
+        
+    @property
+    def current_word(self):
+        word = [letter if letter in self.letters else "_" for letter in self.word]
+        
+        return "".join(word)
 
+    def guess(self, letter):        
+        self.letters += letter
+        db.session.commit()
+        
+        return letter in self.word
+    
 # END OF DATABASE
 
 # ROUTES
@@ -35,47 +49,47 @@ def home():
 
 @app.route("/game", methods=["POST", "GET"])
 def hangman():    
+    
+    if request.method == "POST":
+        topic = request.form["topic"].lower()
+        game = Game(topic + ".txt")
+        
+        db.session.add(game)
+        db.session.flush()
+        db.session.refresh(game)
+        
+        id = game.gameid
+        
+        gamejson = jsonify(gameid = id,
+                    word = game.word,
+                    guesses = game.guesses,)
+        db.session.commit()
+        
+        return gamejson
+    
     return render_template("hangman.html")
 
-
-@app.route("/play", methods=["POST"])
-def play():
-    # game = Game("andrew")
-    # db.session.add(game)
-    # db.session.commit()
     
-    # games = game.query.all()
+@app.route("/game/<string:gameid>", methods=["POST", "GET"])
+def game(gameid):
+    game = Game.query.get_or_404(gameid)
     
-    # print(game.query.all())
-    
-    # print(games)
-    
-    # for x in games:
-    #     # db.session.query(x)
+    if request.method == "POST":
+        letter = request.form["letter"]
+        data = game.guess(letter)
         
-    #     print(db.session.query(x))
-    
-    return redirect(url_for('home'))
-
-# @app.route("/game/<string:gameid>", methods=["POST", "GET"])
-# def game(gameid):
-    # game = Game.query.get_or_404(gameid)
-    
-    # word = game._word
-    
-    # return render_template("hangman-game.html")
+        return jsonify({"contains": data, "current": game.current_word})
+            
+    return render_template("hangman-game.html", game=game)
 
 
 # END OF ROUTES
 
 
 if __name__ == "__main__":
+    db.session.commit()
+    db.drop_all()
+    
     db.create_all()
     
-    testGame = Game("POOP")
-    
-    print(testGame.query)
-    
-    # print(Game.query.all())
-    
-    # app.run(debug=True)
+    app.run(debug=True)

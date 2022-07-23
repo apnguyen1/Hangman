@@ -1,10 +1,4 @@
 {% extends "index.html" %}
-
-{% block styles %}
-<link rel="stylesheet" href="/static/css/hangman.css">
-{% endblock %}
-
-
 {% block content %}
 <div class="hangman-title">
     <h1> Welcome to Hangman </h1>
@@ -19,7 +13,7 @@
         before the game ends will be <span>10 guesses</span>. That's it, have fun!
     </p>
 </div>
-<form class="topic-form" action="{{ url_for('play') }}" method="POST">
+<div class="topic-form">
     <div class="topic-item btn btn-md border-primary">
         <span class="topic-title text-bg-light">Classic</span>
         <p class="topic-desc">Words from English Dictionary</p>
@@ -29,12 +23,8 @@
         <p class="topic-desc">A champion from League of Legend</p>
     </div>
     <div class="topic-item btn btn-md border-primary" action="">
-        <span class="topic-title text-bg-light">Testing</span>
+        <span class="topic-title text-bg-light">Test</span>
         <p class="topic-desc">A small dictionary</p>
     </div>
-</form>
-{% endblock %}
-
-{% block script %}
-<script src="{{ url_for('static', filename='js/hangman.js') }}"></script>
+</div>
 {% endblock %}

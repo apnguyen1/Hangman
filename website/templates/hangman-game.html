@@ -1,11 +1,5 @@
 {% extends "index.html" %}
-
-{% block styles %}
-<link rel="stylesheet" href={{ url_for('static', filename='css/hangman-game.css') }}>
-{% endblock %}
-
 {% block content %}
-
 <div class="hangman-game">
     <svg id="hangman-drawing" class="text-center">
         <g>
@@ -34,17 +28,12 @@
         </g>
     </svg>
 </div>
-
 <div class="hangman-secret-word">
-
-    {% for letter in word %} 
-        <span class="secret-letter" id={{"letter-" ~ loop.index}}>-</span>
-    {% endfor %}
-
-    
+    <h1 class="secret-word">{{game.current_word}}</h1>
 </div>
 
-<form class="hangman-keyboard" method="get">
+
+<div class="hangman-keyboard">
     <div class="keyboard-row row-one">
         <button type="button" class="keyboard-button btn btn-lg">q</button>
         <button type="button" class="keyboard-button btn btn-lg">w</button>
@@ -75,11 +64,7 @@
         <button type="button" class="keyboard-button btn btn-lg">v</button>
         <button type="button" class="keyboard-button btn btn-lg">b</button>
         <button type="button" class="keyboard-button btn btn-lg">n</button>
-        <button type="button" class="keyboard-button btn btn-lg" value="m">m</button>
+        <button type="button" class="keyboard-button btn btn-lg">m</button>
     </div>
-</form>
-{% endblock %}
-
-{% block script %} 
-<script src={{ url_for('static', filename='js/game.js')}}></script>
+</div>
 {% endblock %}
