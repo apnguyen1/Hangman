@@ -14,12 +14,16 @@ db = SQLAlchemy(app)
 
 
 class Game(db.Model):
-    gameid = db.Column(db.Integer, primary_key=True)
+    gameid = db.Column(db.String(50), primary_key=True)
     word = db.Column(db.String(30))
-    guesses = db.Column(db.Integer)
+    guesses = db.Column(db.Integer, default="8")
     
-    def __repr__(self):
-        return "<Game %r > " % self.gameid
+    def __init__(self, word):
+        self.gameid = uuid1()
+        self.word = word
+    
+    # def __repr__(self):
+    #     return "<Game %r > " % self.gameid
 
 # END OF DATABASE
 
@@ -36,13 +40,13 @@ def hangman():
 
 @app.route("/play", methods=["POST"])
 def play():
-    game = Game("andrew")
+    # game = Game("andrew")
     # db.session.add(game)
     # db.session.commit()
     
     # games = game.query.all()
     
-    print(game.query.all())
+    # print(game.query.all())
     
     # print(games)
     
@@ -66,4 +70,12 @@ def play():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    db.create_all()
+    
+    testGame = Game("POOP")
+    
+    print(testGame.query)
+    
+    # print(Game.query.all())
+    
+    # app.run(debug=True)
