@@ -15,7 +15,7 @@
             </g>
 
             <!-- Drawing of Body -->
-            <g id="drawing-body">
+            <g id="drawing-body" class="d-none">
                 <circle id="head" cx="200" cy="80" r="20" fill="white"></circle>
                 <line id="torso" x1="200" y1="100" x2="200" y2="150" />
                 <line id="armL" x1="200" y1="120" x2="170" y2="140" />
@@ -29,14 +29,13 @@
     </svg>
 </div>
 <div class="hangman-secret-word">
-    <h1 class="secret-word">{{game.current_word}}</h1>
+    {% for letter in game.current_word %}
+        <span style="display: inline-block;" class="secret-word">{{letter}}</span>
+    {% endfor %}
 </div>
 
 
 <!-- TODO
-    add color-coded letter presses. when letter is contained in word vs not contained
-    figure out how to keep in memory the key pressed no matter whether if the page is reloaded or not
-    the end game design. 
     Sound and animation
     The animation of hangman
     
@@ -45,36 +44,30 @@
 
 <div class="hangman-keyboard">
     <div class="keyboard-row row-one">
-        <button type="button" class="keyboard-button btn btn-lg">q</button>
-        <button type="button" class="keyboard-button btn btn-lg">w</button>
-        <button type="button" class="keyboard-button btn btn-lg">e</button>
-        <button type="button" class="keyboard-button btn btn-lg">r</button>
-        <button type="button" class="keyboard-button btn btn-lg">t</button>
-        <button type="button" class="keyboard-button btn btn-lg">y</button>
-        <button type="button" class="keyboard-button btn btn-lg">u</button>
-        <button type="button" class="keyboard-button btn btn-lg">i</button>
-        <button type="button" class="keyboard-button btn btn-lg">o</button>
-        <button type="button" class="keyboard-button btn btn-lg">p</button>
+        {% for letter in "QWERTYUIOP" %}
+            <button type="button" class="keyboard-button btn btn-lg 
+            {% if letter in game['letters'] %} 
+            {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
+            {% endif %}">{{letter}}</button>
+
+        {% endfor %}
     </div>
     <div class="keyboard-row row-two">
-        <button type="button" class="keyboard-button btn btn-lg">a</button>
-        <button type="button" class="keyboard-button btn btn-lg">s</button>
-        <button type="button" class="keyboard-button btn btn-lg">d</button>
-        <button type="button" class="keyboard-button btn btn-lg">f</button>
-        <button type="button" class="keyboard-button btn btn-lg">g</button>
-        <button type="button" class="keyboard-button btn btn-lg">h</button>
-        <button type="button" class="keyboard-button btn btn-lg">j</button>
-        <button type="button" class="keyboard-button btn btn-lg">k</button>
-        <button type="button" class="keyboard-button btn btn-lg">l</button>
+        {% for letter in "ASDFGHJKL" %}
+        <button type="button" class="keyboard-button btn btn-lg 
+        {% if letter in game['letters'] %} 
+        {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
+        {% endif %}">{{letter}}</button>
+        {% endfor %}
     </div>
     <div class="keyboard-row row-three">
-        <button type="button" class="keyboard-button btn btn-lg">z</button>
-        <button type="button" class="keyboard-button btn btn-lg">x</button>
-        <button type="button" class="keyboard-button btn btn-lg">c</button>
-        <button type="button" class="keyboard-button btn btn-lg">v</button>
-        <button type="button" class="keyboard-button btn btn-lg">b</button>
-        <button type="button" class="keyboard-button btn btn-lg">n</button>
-        <button type="button" class="keyboard-button btn btn-lg">m</button>
+        {% for letter in "ZXCVBNM" %}
+        <button type="button" class="keyboard-button btn btn-lg 
+        {% if letter in game['letters'] %} 
+        {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
+        {% endif %}">{{letter}}</button>
+        {% endfor %}
     </div>
+
 </div>
 {% endblock %}

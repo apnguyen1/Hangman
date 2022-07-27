@@ -16,28 +16,30 @@ $(".topic-item").click(function (e) {
     });
 });
 
-$("button").click(function (e) { 
+$(".keyboard-button").click(function (e) { 
     e.preventDefault();
-
+    let btn = this;
     $.ajax({
         type: "POST",
         url: "",
         data: {letter: $(this).text()},
-        // dataType: "text",
+        dataType: "json",
         success: function (response) {
-            console.log(response["contains"])
-
-            $(".secret-word").text(response["current"])
-            
+            $(btn).addClass("jump");
+            if(response['contains']) {
+                $(btn).addClass("btn-success");
+                $(".secret-word").each(function (index, element) {
+                    if(response.current[index] == $(btn).text()) {
+                        $(element).addClass("flip")
+                        $(element).text(response.current[index]);
+                    }
+                });
+            } 
+            $(btn).addClass("disabled btn-secondary");
+        },
+        error: function(xhr, status, error) {
+            alert("Server is down!");
         }
-    })
-    // .done(function(data) {
-    //     window.location.reload();
-    // });
-    
-    x= $(this).text();
-
-    $(this).addClass("disabled");
-    $(this).addClass("btn-secondary");
+    });
 });
 

@@ -92,3 +92,42 @@ rect {
 .keyboard-row {
     margin-top: 20px;
 }
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn {
+    box-shadow: none !important;
+}
+
+.flip {
+    animation: flip .8s linear;
+}
+
+@keyframes flip {
+    from {
+        transform: none;
+    }
+    
+
+    to {
+        transform: rotateX(360deg);
+    }
+}
+
+.jump {
+    animation: jump 1s linear;
+}
+
+@keyframes jump {
+    0%, 40%, 100% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(-20px);
+    }
+
+}

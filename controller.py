@@ -20,24 +20,31 @@ class Game(db.Model):
     letters = db.Column(db.String(26))
     
     def __init__(self, dict):
-        words = open(dict).read().splitlines()
+        # words = open(dict).read().splitlines()
+        
+        
+        words = [word.upper() for word in open(dict).read().splitlines() if len(word) > 2 and word.isalpha()]
+        
         
         self.gameid = str(uuid1())
         self.word = choice(words)
+        
+        print(self.word)
         self.guesses = 8
         self.letters = ''
         
     @property
     def current_word(self):
         word = [letter if letter in self.letters else "_" for letter in self.word]
-        
-        return "".join(word)
+        return word
 
-    def guess(self, letter):        
-        self.letters += letter
+    def guess(self, letter):  
+        guess = letter.upper()
+              
+        self.letters += guess
         db.session.commit()
         
-        return letter in self.word
+        return guess in self.word
     
 # END OF DATABASE
 
