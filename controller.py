@@ -16,36 +16,39 @@ db = SQLAlchemy(app)
 class Game(db.Model):
     gameid = db.Column(db.String(50), primary_key=True)
     word = db.Column(db.String(30))
-    guesses = db.Column(db.Integer)
     letters = db.Column(db.String(26))
     
     def __init__(self, dict):
-        # words = open(dict).read().splitlines()
-        
-        
         words = [word.upper() for word in open(dict).read().splitlines() if len(word) > 2 and word.isalpha()]
-        
-        
         self.gameid = str(uuid1())
         self.word = choice(words)
-        
         print(self.word)
-        self.guesses = 8
         self.letters = ''
         
     @property
     def current_word(self):
         word = [letter if letter in self.letters else "_" for letter in self.word]
         return word
+    
+    @property 
+    def errors(self):
+        errors = set(self.letters).difference(set(self.word))
+        return len(errors)
+    
+    @property
+    def lost(self):
+        return self.errors >= 8
+    
+    @property
+    def won(self):
+        return "".join(self.current_word) == self.word    
 
     def guess(self, letter):  
         guess = letter.upper()
-              
         self.letters += guess
         db.session.commit()
         
         return guess in self.word
-    
 # END OF DATABASE
 
 # ROUTES
@@ -65,11 +68,7 @@ def hangman():
         db.session.flush()
         db.session.refresh(game)
         
-        id = game.gameid
-        
-        gamejson = jsonify(gameid = id,
-                    word = game.word,
-                    guesses = game.guesses,)
+        gamejson = jsonify(gameid = game.gameid,)
         db.session.commit()
         
         return gamejson
@@ -83,9 +82,12 @@ def game(gameid):
     
     if request.method == "POST":
         letter = request.form["letter"]
-        data = game.guess(letter)
         
-        return jsonify({"contains": data, "current": game.current_word})
+        return jsonify(contains = game.guess(letter),
+                       current = game.current_word,
+                       errors = game.errors,
+                       lost = game.lost,
+                       won = game.won)
             
     return render_template("hangman-game.html", game=game)
 

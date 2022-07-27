@@ -25,7 +25,13 @@ $(".keyboard-button").click(function (e) {
         data: {letter: $(this).text()},
         dataType: "json",
         success: function (response) {
-            $(btn).addClass("jump");
+            $(btn).addClass("jump disabled");
+
+            if(response["won"] || response["lost"]) {
+                window.location.reload();
+            }
+
+
             if(response['contains']) {
                 $(btn).addClass("btn-success");
                 $(".secret-word").each(function (index, element) {
@@ -34,8 +40,11 @@ $(".keyboard-button").click(function (e) {
                         $(element).text(response.current[index]);
                     }
                 });
-            } 
-            $(btn).addClass("disabled btn-secondary");
+            } else {
+                $(btn).addClass("btn-secondary");
+                $(".drawing-body").children().slice(0, response["errors"]).show();
+                
+            }
         },
         error: function(xhr, status, error) {
             alert("Server is down!");
@@ -43,3 +52,6 @@ $(".keyboard-button").click(function (e) {
     });
 });
 
+function updateDrawing() {
+
+}

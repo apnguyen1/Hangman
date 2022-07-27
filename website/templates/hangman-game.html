@@ -15,15 +15,15 @@
             </g>
 
             <!-- Drawing of Body -->
-            <g id="drawing-body" class="d-none">
-                <circle id="head" cx="200" cy="80" r="20" fill="white"></circle>
-                <line id="torso" x1="200" y1="100" x2="200" y2="150" />
-                <line id="armL" x1="200" y1="120" x2="170" y2="140" />
-                <line id="armR" x1="200" y1="120" x2="230" y2="140" />
-                <line id="legL" x1="200" y1="150" x2="180" y2="190" />
-                <line id="legR" x1="200" y1="150" x2="220" y2="190" />
-                <circle id="left-eye" cx="193" cy="80" r="4"></circle>
-                <circle id="right-eye" cx="207" cy="80" r="4"></circle>
+            <g class="drawing-body">
+                <circle cx="200" cy="80" r="20" fill="white"></circle>
+                <line  x1="200" y1="100" x2="200" y2="150" />
+                <line x1="200" y1="120" x2="170" y2="140" />
+                <line x1="200" y1="120" x2="230" y2="140" />
+                <line x1="200" y1="150" x2="180" y2="190" />
+                <line x1="200" y1="150" x2="220" y2="190" />
+                <circle cx="193" cy="80" r="4"></circle>
+                <circle cx="207" cy="80" r="4"></circle>
             </g>
         </g>
     </svg>
@@ -37,11 +37,12 @@
 
 <!-- TODO
     Sound and animation
-    The animation of hangman
+    game is finished.
+    add replayibility
+    deploy to website
     
 
 -->
-
 <div class="hangman-keyboard">
     <div class="keyboard-row row-one">
         {% for letter in "QWERTYUIOP" %}
@@ -68,6 +69,23 @@
         {% endif %}">{{letter}}</button>
         {% endfor %}
     </div>
+
+{% if game.won or game.lost %}
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gameFinished" aria-hidden="true">
+        <div class="modal-dialog-centered modal-lg" role="alert">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{'YOU WON' if game.won else 'YOU LOST'}}
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
 
 </div>
 {% endblock %}
