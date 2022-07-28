@@ -1,3 +1,4 @@
+from asyncio import constants
 import json
 from secrets import choice
 from uuid import uuid1
@@ -44,22 +45,18 @@ class Game(db.Model):
         return "".join(self.current_word) == self.word    
 
     def guess(self, letter):  
-        guess = letter.upper()
-        self.letters += guess
+        if letter is None:
+            return False
+        
+        self.letters += letter
         db.session.commit()
         
-        return guess in self.word
+        return letter in self.word
 # END OF DATABASE
 
 # ROUTES
-
-@app.route("/")
-def home():
-    return render_template("home.html")
-
-@app.route("/game", methods=["POST", "GET"])
-def hangman():    
-    
+@app.route("/", methods=["POST", "GET"])
+def hangman():
     if request.method == "POST":
         topic = request.form["topic"].lower()
         game = Game(topic + ".txt")
@@ -68,16 +65,15 @@ def hangman():
         db.session.flush()
         db.session.refresh(game)
         
-        gamejson = jsonify(gameid = game.gameid,)
+        gamejson = jsonify(gameid = game.gameid)
         db.session.commit()
         
         return gamejson
     
     return render_template("hangman.html")
 
-    
-@app.route("/game/<string:gameid>", methods=["POST", "GET"])
-def game(gameid):
+@app.route("/<string:topic>/<string:gameid>", methods=["POST", "GET"])
+def game(topic, gameid):
     game = Game.query.get_or_404(gameid)
     
     if request.method == "POST":
@@ -88,8 +84,9 @@ def game(gameid):
                        errors = game.errors,
                        lost = game.lost,
                        won = game.won)
-            
-    return render_template("hangman-game.html", game=game)
+    
+    
+    return render_template("hangman-game.html", game=game, topic=topic)
 
 
 # END OF ROUTES

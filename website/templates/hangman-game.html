@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
+<h2>Guesses left: <span id="life-left">{{8-game.errors}}</span></h2>
 <div class="hangman-game">
     <svg id="hangman-drawing" class="text-center">
         <g>
@@ -16,14 +17,14 @@
 
             <!-- Drawing of Body -->
             <g class="drawing-body">
-                <circle cx="200" cy="80" r="20" fill="white"></circle>
-                <line  x1="200" y1="100" x2="200" y2="150" />
-                <line x1="200" y1="120" x2="170" y2="140" />
-                <line x1="200" y1="120" x2="230" y2="140" />
-                <line x1="200" y1="150" x2="180" y2="190" />
-                <line x1="200" y1="150" x2="220" y2="190" />
-                <circle cx="193" cy="80" r="4"></circle>
-                <circle cx="207" cy="80" r="4"></circle>
+                <circle cx="200" cy="80" r="20" fill="white" class="{{'fade-in' if game.errors > 0}}"></circle>
+                <line  x1="200" y1="100" x2="200" y2="150" class="{{'fade-in' if game.errors > 1}}"/>
+                <line x1="200" y1="120" x2="170" y2="140" class="{{'fade-in' if game.errors > 2}}"/>
+                <line x1="200" y1="120" x2="230" y2="140" class="{{'fade-in' if game.errors > 3}}"/>
+                <line x1="200" y1="150" x2="180" y2="190" class="{{'fade-in' if game.errors > 4}}"/>
+                <line x1="200" y1="150" x2="220" y2="190" class="{{'fade-in' if game.errors > 5}}"/>
+                <circle cx="193" cy="80" r="4" class="{{'fade-in' if game.errors > 6}}"></circle>
+                <circle cx="207" cy="80" r="4" class="{{'fade-in' if game.errors > 7}}"></circle>
             </g>
         </g>
     </svg>
@@ -33,59 +34,68 @@
         <span style="display: inline-block;" class="secret-word">{{letter}}</span>
     {% endfor %}
 </div>
-
-
 <!-- TODO
     Sound and animation
-    game is finished.
     add replayibility
     deploy to website
-    
-
 -->
-<div class="hangman-keyboard">
-    <div class="keyboard-row row-one">
-        {% for letter in "QWERTYUIOP" %}
+
+{% if not game.won and not game.lost %}
+    <div class="hangman-keyboard">
+        <div class="keyboard-row row-one">
+            {% for letter in "QWERTYUIOP" %}
+                <button type="button" class="keyboard-button btn btn-lg 
+                {% if letter in game['letters'] %} 
+                {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
+                {% endif %}">{{letter}}</button>
+
+            {% endfor %}
+        </div>
+        <div class="keyboard-row row-two">
+            {% for letter in "ASDFGHJKL" %}
             <button type="button" class="keyboard-button btn btn-lg 
             {% if letter in game['letters'] %} 
             {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
             {% endif %}">{{letter}}</button>
-
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="keyboard-row row-three">
+            {% for letter in "ZXCVBNM" %}
+            <button type="button" class="keyboard-button btn btn-lg 
+            {% if letter in game['letters'] %} 
+            {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
+            {% endif %}">{{letter}}</button>
+            {% endfor %}
+        </div>
     </div>
-    <div class="keyboard-row row-two">
-        {% for letter in "ASDFGHJKL" %}
-        <button type="button" class="keyboard-button btn btn-lg 
-        {% if letter in game['letters'] %} 
-        {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
-        {% endif %}">{{letter}}</button>
-        {% endfor %}
+{% else %}
+    <div class="finished-game">
+        <a class="btn btn-md border-primary" href="{{url_for('hangman')}}">Back to Menu</a>
+        <button type="button" class="play-again btn btn-md border-primary" value="{{topic}}">Play again?</button>
     </div>
-    <div class="keyboard-row row-three">
-        {% for letter in "ZXCVBNM" %}
-        <button type="button" class="keyboard-button btn btn-lg 
-        {% if letter in game['letters'] %} 
-        {{'btn-success disabled' if letter in game['word'] else 'btn-secondary disabled'}} 
-        {% endif %}">{{letter}}</button>
-        {% endfor %}
-    </div>
-
-{% if game.won or game.lost %}
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gameFinished" aria-hidden="true">
-        <div class="modal-dialog-centered modal-lg" role="alert">
+    <!-- MODAL POP UP -->
+    <div id="mymodel" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    {{'YOU WON' if game.won else 'YOU LOST'}}
+                    <h3 class="modal-title">{{'YOU WON' if game.won else 'YOU LOST'}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    
+                    {{'Congratulations! You won with ' + (8-game.errors)|string + ' guesses left.' if game.won else 'Uh oh! You ran out of guesses and lost :(. '}}
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div> 
             </div>
         </div>
     </div>
-
 {% endif %}
 
+{% if game.won or game.lost %}
+    
+{% endif %}
 
-</div>
 {% endblock %}

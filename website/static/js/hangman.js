@@ -1,18 +1,46 @@
+$(document).ready(function() {
+    if(sessionStorage.reloadAfterPageLoad) {
+        setTimeout(function() {
+            $("#mymodel").modal('show');
+            sessionStorage.reloadAfterPageLoad = false;
+        }, 2000)
+    }
+});
+
+
 $(".topic-item").click(function (e) {
     e.preventDefault();
 
     let ele = $(this).children().eq(0);
+    var top = $(ele).text().toLowerCase();
     $.ajax({
         type: "POST",
-        url: "/game",
-        data: {topic: $(ele).text()},
+        url: "/",
+        data: {topic: top},
         dataType: "json",
         success: function (response) {
             let id = response["gameid"]
-            let origin = window.location.href;
 
-            window.location.href = origin + "/" + id;
+            window.location.replace(top + "/" + id);
         },
+    });
+});
+
+$(".play-again").click(function (e) {
+    e.preventDefault();
+
+    var top = $(this).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/",
+        data: {topic: top},
+        dataType: "json",
+        success: function (response) {
+            let id = response["gameid"]
+
+            window.location.replace(id);
+        }
     });
 });
 
@@ -20,17 +48,18 @@ $(".keyboard-button").click(function (e) {
     e.preventDefault();
     let btn = this;
     $.ajax({
-        type: "POST",
+        type: "post",
         url: "",
         data: {letter: $(this).text()},
         dataType: "json",
         success: function (response) {
+            res = response;
             $(btn).addClass("jump disabled");
 
             if(response["won"] || response["lost"]) {
+                sessionStorage.reloadAfterPageLoad = true;
                 window.location.reload();
             }
-
 
             if(response['contains']) {
                 $(btn).addClass("btn-success");
@@ -42,9 +71,10 @@ $(".keyboard-button").click(function (e) {
                 });
             } else {
                 $(btn).addClass("btn-secondary");
-                $(".drawing-body").children().slice(0, response["errors"]).show();
-                
+                $(".drawing-body").children().slice(0, response["errors"]).addClass("fade-in");
+                $("#life-left").text(8 - response["errors"]);
             }
+            
         },
         error: function(xhr, status, error) {
             alert("Server is down!");
@@ -52,6 +82,5 @@ $(".keyboard-button").click(function (e) {
     });
 });
 
-function updateDrawing() {
 
-}
+

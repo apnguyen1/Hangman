@@ -15,6 +15,10 @@ body, html {
     margin: auto;
 }
 
+.btn:hover {
+    transform: scale(1.1);
+}
+
 ul {
     list-style-type: none;
     padding: 0 !important;
@@ -79,18 +83,12 @@ rect {
 }
 
 .drawing-body > * {
-    display: none;
+    opacity: 0;
 }
 
-
-@keyframes fadein {
-    from {
-        opacity: 0%;
-    }
-
-    to {
-        opacity: 100%;
-    }
+.fade-in {
+    animation: fadein 1s linear;
+    opacity: 100% !important;
 }
 
 /* END OF DRAWING */
@@ -103,6 +101,7 @@ rect {
 .secret-word {
     font-size: 50px;
     letter-spacing: 25px;
+    margin: 20px 0;
 }
 
 /* Hangman keyboard */
@@ -131,6 +130,17 @@ rect {
     animation: flip .8s linear;
 }
 
+/* END OF KEYBOARD */
+
+/* Finished game */
+
+.finished-game {
+    margin-top: 20px;
+}
+
+
+
+/* ANIMATIONS */
 @keyframes flip {
     from {
         transform: none;
@@ -155,4 +165,14 @@ rect {
         transform: translateY(-20px);
     }
 
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0%;
+    }
+
+    to {
+        opacity: 100%;
+    }
 }
