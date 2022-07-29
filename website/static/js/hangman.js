@@ -1,9 +1,17 @@
 $(document).ready(function() {
-    if(sessionStorage.reloadAfterPageLoad) {
+    if(sessionStorage.getItem("reloadAfterPageLoad") == "true") {
+        $(".secret-word").each(function(index) {
+            $(this).addClass("bounce");
+        
+            $(this).css({
+                '--transition-delay' : .1*(index) + 's'
+            })
+        });
+
         setTimeout(function() {
             $("#mymodel").modal('show');
-            sessionStorage.reloadAfterPageLoad = false;
         }, 2000)
+        sessionStorage.setItem("reloadAfterPageLoad", "false");
     }
 });
 
@@ -57,7 +65,7 @@ $(".keyboard-button").click(function (e) {
             $(btn).addClass("jump disabled");
 
             if(response["won"] || response["lost"]) {
-                sessionStorage.reloadAfterPageLoad = true;
+                sessionStorage.setItem("reloadAfterPageLoad", "true")
                 window.location.reload();
             }
 

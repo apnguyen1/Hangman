@@ -34,12 +34,6 @@
         <span style="display: inline-block;" class="secret-word">{{letter}}</span>
     {% endfor %}
 </div>
-<!-- TODO
-    Sound and animation
-    add replayibility
-    deploy to website
--->
-
 {% if not game.won and not game.lost %}
     <div class="hangman-keyboard">
         <div class="keyboard-row row-one">
@@ -93,9 +87,4 @@
         </div>
     </div>
 {% endif %}
-
-{% if game.won or game.lost %}
-    
-{% endif %}
-
 {% endblock %}

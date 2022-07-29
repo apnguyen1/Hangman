@@ -24,7 +24,6 @@ ul {
     padding: 0 !important;
     margin: 0 !important;
 }
-
 /* END GLOBAL */
 
 /* Navbar */
@@ -57,6 +56,7 @@ ul {
 .topic-item span {
     font-size: larger;
 }
+/* END NAVBAR */
 
 /* Hangman SVG */
 line, circle {
@@ -90,10 +90,9 @@ rect {
     animation: fadein 1s linear;
     opacity: 100% !important;
 }
+/* END OF HANGMAN SVG */
 
-/* END OF DRAWING */
-
-/* Hangman Secret Word */
+/* Secret Word */
 .hangman-secret-word {
     margin: auto;
 }
@@ -103,6 +102,17 @@ rect {
     letter-spacing: 25px;
     margin: 20px 0;
 }
+
+.bounce {
+    animation: bounce 2s infinite;
+    animation-delay: calc(var(--transition-delay));
+}
+
+.flip {
+    animation: flip .8s linear;
+}
+/* END OF SECRET WORD */
+
 
 /* Hangman keyboard */
 
@@ -126,52 +136,48 @@ rect {
     box-shadow: none !important;
 }
 
-.flip {
-    animation: flip .8s linear;
+.jump {
+    animation: jump 1s linear;
 }
-
 /* END OF KEYBOARD */
 
 /* Finished game */
-
 .finished-game {
     margin-top: 20px;
 }
-
-
 
 /* ANIMATIONS */
 @keyframes flip {
     from {
         transform: none;
     }
-    
-
     to {
         transform: rotateX(360deg);
     }
-}
-
-.jump {
-    animation: jump 1s linear;
 }
 
 @keyframes jump {
     0%, 40%, 100% {
         transform: translateY(0);
     }
-
     20% {
         transform: translateY(-20px);
     }
+}
 
+@keyframes bounce {
+    0%, 40%, 100% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-20px);
+    }
 }
 
 @keyframes fadein {
     from {
         opacity: 0%;
     }
-
     to {
         opacity: 100%;
     }
