@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
-<h2>Guesses left: <span id="life-left">{{8-game.errors}}</span></h2>
+<h2 class="guesses-left">Guesses left: <span id="life-left">{{8-game.errors}}</span></h2>
 <div class="hangman-game">
     <svg id="hangman-drawing" class="text-center">
         <g>
@@ -29,12 +29,12 @@
         </g>
     </svg>
 </div>
-<div class="hangman-secret-word">
-    {% for letter in game.current_word %}
-        <span style="display: inline-block;" class="secret-word">{{letter}}</span>
-    {% endfor %}
-</div>
 {% if not game.won and not game.lost %}
+    <div class="hangman-secret-word">
+        {% for letter in game.current_word %}
+            <span style="display: inline-block;" class="secret-word">{{letter}}</span>
+        {% endfor %}
+    </div>
     <div class="hangman-keyboard">
         <div class="keyboard-row row-one">
             {% for letter in "QWERTYUIOP" %}
@@ -63,6 +63,12 @@
         </div>
     </div>
 {% else %}
+    <div class="hangman-secret-word">
+        {% for letter in game.word %}
+            <span style="display: inline-block;" class="secret-word">{{letter}}</span>
+        {% endfor %}
+    </div>
+
     <div class="finished-game">
         <a class="btn btn-md border-primary" href="{{url_for('hangman')}}">Back to Menu</a>
         <button type="button" class="play-again btn btn-md border-primary" value="{{topic}}">Play again?</button>
@@ -78,7 +84,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{'Congratulations! You won with ' + (8-game.errors)|string + ' guesses left.' if game.won else 'Uh oh! You ran out of guesses and lost :(. '}}
+                    {{'Congratulations! You won with ' + (8-game.errors)|string + ' guesses left.' if game.won else 'Uh oh! You ran out of guesses and lost :(. 
+                    The secret word was "' + game.word + '"'}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

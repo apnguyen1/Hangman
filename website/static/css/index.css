@@ -10,8 +10,8 @@ body, html {
     font-size: large;
 }
 
-.content {
-    width: 80%;
+.hangman-description {
+    width: clamp(60%, 80%, 100vw);
     margin: auto;
 }
 
@@ -24,13 +24,17 @@ ul {
     padding: 0 !important;
     margin: 0 !important;
 }
+
+.hangman-title {
+    margin-top: 20px;
+}
+
 /* END GLOBAL */
 
 /* Navbar */
 .navbar-brand {
-    margin-left: 20px;
+    margin-left: 1rem;
 }
-
 
 .topic-form {
     display: flex;
@@ -39,7 +43,7 @@ ul {
 }
 
 .topic-item {
-    width: clamp(300px, 700px, 100%);
+    width: clamp(300px, 700px, 90%);
     margin: 1rem 0;
     padding: 0;
 }
@@ -59,6 +63,10 @@ ul {
 /* END NAVBAR */
 
 /* Hangman SVG */
+.guesses-left {
+    margin-top: 20px;
+}
+
 line, circle {
     stroke: black;
     stroke-width: 4px;
@@ -95,11 +103,12 @@ rect {
 /* Secret Word */
 .hangman-secret-word {
     margin: auto;
+    text-align: center;
 }
 
 .secret-word {
-    font-size: 50px;
-    letter-spacing: 25px;
+    font-size: clamp(1rem, 50px, 70px);
+    letter-spacing: clamp(5px, 25px, 30px);
     margin: 20px 0;
 }
 
@@ -120,11 +129,13 @@ rect {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    
 }
 
 .keyboard-row {
+    /* display: flex; */
     margin-top: 20px;
+    
 }
 
 .btn:focus {
@@ -180,5 +191,27 @@ rect {
     }
     to {
         opacity: 100%;
+    }
+}
+
+
+@media (max-width: 578px) {
+    .keyboard-row {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .keyboard-row button {
+        font-size: 1.3rem;
+        padding: .3rem;
+    }
+
+    .secret-word {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+
+    .hangman-description {
+        width: 95%;
     }
 }

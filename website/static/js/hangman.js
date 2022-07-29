@@ -10,7 +10,7 @@ $(document).ready(function() {
 
         setTimeout(function() {
             $("#mymodel").modal('show');
-        }, 2000)
+        }, 1000)
         sessionStorage.setItem("reloadAfterPageLoad", "false");
     }
 });
